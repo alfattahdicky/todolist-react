@@ -11,7 +11,6 @@ const Dashboard = () => {
       <Box>
         <HeaderDasboard />
         <ListDashboard />
-        
       </Box>
     </Stack>
   )

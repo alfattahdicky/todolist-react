@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const BASEURL = "https://todo.api.devcode.gethired.id";
+import BASEURL from "./url"
 
 export const getAllActivity = async () => {
   const listActivity = await axios.get(`${BASEURL}/activity-groups?email=yoga%2B1%40skyshi.io`); 
@@ -33,7 +32,7 @@ export const deleteActivity = async (id) => {
 }
 
 export const patchActivity = async (title, id) => {
-  const patchActivityById = await axios.patch(`${BASEURL}/activity-group/${id}`, title);
+  const patchActivityById = await axios.patch(`${BASEURL}/activity-groups/${id}`, {title});
 
   console.log(patchActivityById);
 

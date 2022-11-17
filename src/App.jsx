@@ -7,6 +7,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/activity-group/:id" element={<DetailActivity />} />
+      <Route path="/todo-items" element={<DetailActivity />} />
+      <Route path="/todo-items?activity_group_id=:id" element={<DetailActivity />} />
+      <Route path="/todo-items/:id" element={<DetailActivity />} />
     </Routes>
   )
 }
