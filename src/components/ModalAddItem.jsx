@@ -4,8 +4,7 @@ import { useState } from "react";
 import Item from "./listItemActivity/Item";
 import uppercaseAndRemoveSpecialCharacter from "../utils/regex"
 
-const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, stateInput, setStateInput , item, setItem}) => {
-  // const [item, setItem] = useState(listItemPriority);
+const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, stateInput, setStateInput , item, setItem, stateModal}) => {
 
   const handleClickPriority = (objPriority) => {
     const checkPriority = prioritys.map(priority => {
@@ -16,11 +15,8 @@ const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, st
     });
 
     setPrioritys(checkPriority);
-    // console.log(objPriority);
-    setItem({...item, ...objPriority});
+    setItem({...item, ...objPriority})
   }
-
-  // console.log(item);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="2xl">
@@ -65,7 +61,7 @@ const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, st
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button  bgColor="#16ABF8" variant="solid" color="white" fontWeight="bold" borderRadius="20px" py="1.4rem" px="2rem" isDisabled={stateInput?.length == 0 ? true : false} onClick={addListItem} _hover={{backgroundColor: "none"}} _active={{background: "none"}} _focus={{backgroundColor: "#16ABF8"}}>Simpan</Button>
+          <Button  bgColor="#16ABF8" variant="solid" color="white"  fontWeight="bold" borderRadius="20px" py="1.4rem" px="2rem" isDisabled={stateInput?.length == 0 ? true : false} onClick={addListItem} _hover={{backgroundColor: "none"}} _active={{background: "none"}} _focus={{backgroundColor: "#16ABF8"}}>Simpan</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

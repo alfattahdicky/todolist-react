@@ -1,6 +1,6 @@
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import {Box, Grid, Center, Text, Stack, Flex, Button, IconButton, SimpleGrid, Image} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {Box, Grid, Center, Text, Stack, Flex, Button, IconButton, SimpleGrid, Image, useDisclosure, Alert, AlertIcon} from "@chakra-ui/react";
+import { useEffect, useState, useRef } from "react";
 import { deleteActivity, getAllActivity, postActivity } from "../../data/activity";
 import ItemActivity from "./ItemActivity";
 import convertUTCToDate from "../../utils/date"
@@ -28,18 +28,18 @@ const ListDashboard = () => {
     setActivitys([data, ...activitys]);
     const addActivity = await postActivity(data);
 
-    console.log(addActivity);
+    // console.log(addActivity);
     // navigate("/new-activity")
   }
 
-  const deleteItem = async (id) => {
+  const deleteItem = async (e, id) => {
+    // e.stopPropagation();
+    console.log("delete item activity", id);
     const delActivity = await deleteActivity(id);
-
     setActivitys(activitys.filter(activity => activity.id !== id))
-    console.log(delActivity);
   }
 
-  const editItem = (id) => {
+  const editItem = (e, id) => {
     navigate(`/activity-group/${id}`)
   }
 
@@ -55,11 +55,15 @@ const ListDashboard = () => {
         {
           activitys.reverse().map((activity) => {
             return (
-              <ItemActivity title={activity.title} date={convertUTCToDate(activity.created_at)} deleteItemActivity={() => deleteItem(activity.id)} key={activity.id} editItem={() => editItem(activity.id)} />
+              <ItemActivity title={activity.title} date={convertUTCToDate(activity.created_at)} deleteItemActivity={(e) => deleteItem(e, activity.id)} key={activity.id} editItem={(e) => editItem(e, activity.id)} />
             )
           })
         }
       </Grid>
+      {/* <Alert status="warning" variant="subtle">
+        <AlertIcon  />
+        Activity Berhasil Dihapus
+      </Alert> */}
     </Stack>
   )
 }

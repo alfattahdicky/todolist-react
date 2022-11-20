@@ -2,11 +2,12 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { IconButton, Stack, Text, Flex, Box, Checkbox, Input, useDisclosure } from "@chakra-ui/react";
 import {useRef} from "react";
 import Alert from "../Alert";
+import priorityItem from "../../data/priority";
 
 const Item = (props) => {
-  const {title, stateEdit, stateCheckBox ,changeCheckBox, editListItem, priorityColor, deleteListItem, editTitle, changeEditInput} = props;
+  const {title, stateEdit, stateCheckBox ,changeCheckBox, editListItem, priorityColor = priorityItem[0].color, deleteListItem, editTitle, changeEditInput} = props;
   const {isOpen, onOpen, onClose}= useDisclosure();
-  const cancelRef = useRef(null)
+  const cancelRef = useRef(null);
   return (
     <Box bg="white" boxShadow="md" width="100%">
       <Flex align="center" justify="space-between" px="1.2rem" py="0.8rem">

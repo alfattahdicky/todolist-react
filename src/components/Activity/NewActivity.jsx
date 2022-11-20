@@ -1,6 +1,6 @@
 import {Stack, Flex, Box, Button, IconButton, Input, Image, Center, Text, ButtonGroup, useDisclosure} from "@chakra-ui/react";
 import {AddIcon, ChevronLeftIcon, EditIcon} from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getActivity, patchActivity } from "../../data/activity";
 import {getAllListItem, postListItem} from "../../data/listItem";
@@ -13,6 +13,8 @@ const NewActivity = () => {
   const [input, setInput] = useState("");
   const [activity, setActivity] = useState({});
   const [items, setItems] = useState([]);
+  const [item, setItem] = useState({});
+  const [prioritys, setPrioritys] = useState(priorityItem);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [editTitle, setEditTitle] = useState("");
   const navigate = useNavigate();
@@ -30,18 +32,19 @@ const NewActivity = () => {
   const patchDetail = async (title) => {
     const activityById = await patchActivity(title, params.id);
 
-    console.log(activityById);
+    // console.log(activityById);
   }
 
   const getListItem = async () => {
     const dataItems = await getAllListItem(params.id);
     const responseData = dataItems.data;
-    console.log(dataItems);
-
+    
     setItems(responseData.data);
+    console.log(responseData);
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    console.log(items);
     getListItem();
   }, []);
 
@@ -51,16 +54,14 @@ const NewActivity = () => {
 
   const addListItem = async () => {
     const data = {
+      title: "new items",
       activity_group_id: params.id,
-      title: stateInput
     }
     const postItemCall = await postListItem(data);
 
+    setItems([...items, postItemCall.data])
     console.log(postItemCall);
-    setItems([...items, data])
     setStateInput("");
-
-    navigate(`/activity-group/${params.id}`, {replace: true})
   }
 
   const editItem = () => {
@@ -90,7 +91,7 @@ const NewActivity = () => {
           {
             todo_items?.length !== 0 && <Image src="/todo-sort-button.png" width="2.3rem" height="2.3rem" me="0.5rem"/> 
           }
-          <Button leftIcon={<AddIcon />} bgColor="#16ABF8" color="white" onClick={onOpen}>
+          <Button leftIcon={<AddIcon />} bgColor="#16ABF8" color="white" onClick={addListItem}>
             Tambah
           </Button>
           
@@ -101,7 +102,6 @@ const NewActivity = () => {
         <Image src="/todo-empty-state.png"  />
         </Center> : <ListItem items={items} setItems={setItems} />
       }
-      <ModalAddItem isOpen={isOpen} onClose={onClose} addListItem={addListItem} priorityItem={priorityItem} item={priorityItem[0]} stateInput={input} setStateInput={setInput} />
     </Stack>
   )
 }

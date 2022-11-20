@@ -1,4 +1,4 @@
-import {Stack, useDisclosure} from "@chakra-ui/react";
+import {color, Stack, useDisclosure} from "@chakra-ui/react";
 import Item from "./Item";
 import {useEffect, useState} from "react";
 import { delListItem, getItemsById, patchListItem } from "../../data/listItem";
@@ -45,37 +45,44 @@ const ListItem = ({items, setItems}) => {
   }
 
   const priorityColorItem = (priority) => {
-    let items = priorityItem.find(item => item.priority === priority);
-    // console.log(items)
-    return items.color;
+    let itemPriority = priorityItem?.find(item => item.priority === priority);
+    // console.log(itemPriority, priority)
+    return itemPriority?.color;
   }
-
 
   const editListItem = async (id) => {
     onOpen();
     const getDetailItem = await getItemsById(id);
     const data = await getDetailItem.data;
     // console.log(data);
-    const findItem = priorityItem.find(pItem => pItem.priority == data.priority);
-    // console.log(findItem);
-
     const cloneObj = {...data};
+    const findItem = priorityItem.find(pItem => pItem.priority == cloneObj.priority);
+    console.log(findItem);
+
     setEditItem(Object.assign(cloneObj, {color: findItem.color}));
     setInput(data.title);
   }
 
-  const editListItemById = async () => {
+  const modalEditListItemById = async () => {
     const updateData = {
       title: input,
       is_active: editItem.is_active,
       priority: editItem.priority
     }
-    console.log(updateData);
+    // console.log(editItem);
     const patchItem = await patchListItem(updateData, editItem.id);
     console.log(patchItem);
+    const updateItem = items.map((item) => {
+      if(item.id == editItem.id) {
+        return {...item, ...updateData}
+      }else {
+        return item;
+      }
+    });
+    console.log(updateItem);
+    setItems(updateItem);
+    onClose();
   }
-
-  // console.log(editItem)
 
   return (
     <Stack>
@@ -86,9 +93,9 @@ const ListItem = ({items, setItems}) => {
           )
         })
       }
-      <ModalAddItem isOpen={isOpen} onClose={onClose} addListItem={editListItemById} priorityItem={priorityItem} input={editItem.title} item={editItem} setItem={setEditItem} stateInput={input} setStateInput={setInput} prioritys={prioritys} setPrioritys={setPrioritys} />
+      <ModalAddItem isOpen={isOpen} onClose={onClose} addListItem={modalEditListItemById} priorityItem={priorityItem} input={editItem.title} item={editItem} setItem={setEditItem} stateInput={input} setStateInput={setInput} prioritys={prioritys} setPrioritys={setPrioritys} stateModal={false} />
     </Stack>
   )
 }
 
-export default ListItem
+export default ListItem;
