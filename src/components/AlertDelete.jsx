@@ -1,7 +1,7 @@
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, Image, Center, AlertDialogBody, Text, AlertDialogFooter, ButtonGroup, Button } from '@chakra-ui/react'
 import React from 'react'
 
-const Alert = ({item, title, isOpen,cancelRef, onClose, deleteItem}) => {
+const AlertDelete = ({item, title, isOpen,cancelRef, onClose, deleteItem}) => {
   return (
     <AlertDialog isCentered isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} bgColor="white">
       <AlertDialogOverlay />
@@ -26,4 +26,4 @@ const Alert = ({item, title, isOpen,cancelRef, onClose, deleteItem}) => {
   )
 }
 
-export default Alert
+export default AlertDelete

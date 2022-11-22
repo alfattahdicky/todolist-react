@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const ListDashboard = () => {
   const [activitys, setActivitys] = useState([]);
+  const [deleteActive, setDeleteActive] = useState(false);
   const navigate = useNavigate();
 
   const activityAll = async () => {
@@ -18,15 +19,18 @@ const ListDashboard = () => {
 
   useEffect(() => {
     activityAll();
-  }, [])
+    setTimeout(() => {
+      setDeleteActive(false);
+    }, 1000)
+  }, [deleteActive])
 
   const addItem = async () => {
     const data = {
       title: "New Activity",
       email: "yoga+1@skyshi.io"
     }
-    setActivitys([data, ...activitys]);
     const addActivity = await postActivity(data);
+    setActivitys([addActivity.data, ...activitys]);
 
     // console.log(addActivity);
     // navigate("/new-activity")
@@ -36,7 +40,8 @@ const ListDashboard = () => {
     // e.stopPropagation();
     console.log("delete item activity", id);
     const delActivity = await deleteActivity(id);
-    setActivitys(activitys.filter(activity => activity.id !== id))
+    setActivitys(activitys.filter(activity => activity.id !== id));
+    setDeleteActive(true);
   }
 
   const editItem = (e, id) => {
@@ -51,19 +56,22 @@ const ListDashboard = () => {
           Tambah
         </Button>
       </Flex>
+      {activitys.length === 0 ? <Center><Image src="/activity-empty-state.png" /></Center> : null
+      }
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         {
           activitys.reverse().map((activity) => {
             return (
-              <ItemActivity title={activity.title} date={convertUTCToDate(activity.created_at)} deleteItemActivity={(e) => deleteItem(e, activity.id)} key={activity.id} editItem={(e) => editItem(e, activity.id)} />
+              <ItemActivity key={activity.id} title={activity.title} date={convertUTCToDate(activity.created_at)} deleteItemActivity={(e) => deleteItem(e, activity.id)}  editItem={(e) => editItem(e, activity.id)} />
             )
           })
         }
       </Grid>
-      {/* <Alert status="warning" variant="subtle">
-        <AlertIcon  />
+      <Alert backgroundColor="white" status="warning" variant="subtle" position="fixed" bottom="4rem" left="0" width="30%" transition="ease .150s" transform={deleteActive ? "translateX(0)" : "translateX(-100%)"} boxShadow="md" borderRadius="5px">
+        <AlertIcon color="green.500" />
         Activity Berhasil Dihapus
-      </Alert> */}
+      </Alert>
+      
     </Stack>
   )
 }

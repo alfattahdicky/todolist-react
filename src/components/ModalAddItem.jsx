@@ -1,10 +1,8 @@
 import { ChevronDownIcon, CheckIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup, Modal, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Box, Text, Flex, Menu, MenuButton, MenuItem,MenuList, MenuOptionGroup, MenuItemOption, Icon, IconButton } from "@chakra-ui/react";
-import { useState } from "react";
-import Item from "./listItemActivity/Item";
 import uppercaseAndRemoveSpecialCharacter from "../utils/regex"
 
-const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, stateInput, setStateInput , item, setItem, stateModal}) => {
+const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, stateInput, setStateInput , item, setItem}) => {
 
   const handleClickPriority = (objPriority) => {
     const checkPriority = prioritys.map(priority => {
@@ -48,7 +46,7 @@ const ModalAddItem = ({isOpen, onClose, addListItem, prioritys, setPrioritys, st
                             <Flex justify="space-between" w="100%" align="center">
                               <Text>{uppercaseAndRemoveSpecialCharacter(priority.priority)}</Text> 
                               {
-                                priority.isChecked ? <CheckIcon color="#4A4A4A" /> : null
+                                priority.isChecked ? <CheckIcon color="#4A4A4A"  fontSize="0.875rem" /> : null
                               } 
                             </Flex>
                           </MenuItem>

@@ -14,29 +14,32 @@ const ListItem = ({items, setItems}) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const params = useParams();
 
-  const changeCheckBox = (e, id) => {
-    // const checked = e.target.checked;
-    // if(id === 5920) {
-    //   setStateCheckBox(checked);
-    // }
-    // const updateCheckbox = items.map(item => {
-    //   if(item.id === id) {
-    //     if(checked) {
-    //       setStateCheckBox(true)
-    //       return {...item, isActive: 1};
-    //     }else {
-    //       setStateCheckBox(false)
-    //       return {...item, isActive: 0};
-    //     }
-    //   }else {
-    //     return item;
-    //   }
-    // });
-
-    // setItems(updateCheckbox);
-
-    // console.log(e.target.checked, id);
+  const changeCheckBox = async (e, id) => {
+    const {value, checked} = e.target;
+    // console.log(value);
+    // console.log(checked);
+    const updateCheckbox = items.map(item => {
+      if(item.id === id) {
+        if(checked) {
+          return {...item, is_active: 1};
+        }else {
+          return {...item, is_active: 0};
+        }
+      }else {
+        return item;
+      }
+    });
+    const findElementCheckbox = updateCheckbox.find((checkbox) => checkbox.title === value);
+    const data = {
+      title: findElementCheckbox.title,
+      is_active: findElementCheckbox.is_active,
+      priority: findElementCheckbox.priority,
+    }
+    setItems(updateCheckbox);
+    const patchItem = await patchListItem(data, id);
+    console.log(patchItem);
   }
+  
   const deleteListItem = async (id) => {
     setItems(items.filter(item => item.id != id));
     const item = await delListItem(id);
@@ -69,7 +72,7 @@ const ListItem = ({items, setItems}) => {
       is_active: editItem.is_active,
       priority: editItem.priority
     }
-    // console.log(editItem);
+    console.log(editItem);
     const patchItem = await patchListItem(updateData, editItem.id);
     console.log(patchItem);
     const updateItem = items.map((item) => {
@@ -89,7 +92,7 @@ const ListItem = ({items, setItems}) => {
       {
         items.map((item) => {
           return (
-            <Item key={item.id} title={item.title} changeCheckBox={(e) => changeCheckBox(e,item.id)} stateCheckBox={stateCheckBox} priorityColor={() => priorityColorItem(item.priority)} editListItem={() => editListItem(item.id)} deleteListItem={() => deleteListItem(item.id)} />
+            <Item key={item.id} title={item.title} changeCheckBox={(e) => changeCheckBox(e,item.id)} stateCheckBox={item.is_active} priorityColor={() => priorityColorItem(item.priority)} editListItem={() => editListItem(item.id)} deleteListItem={() => deleteListItem(item.id)} id={item.id} />
           )
         })
       }

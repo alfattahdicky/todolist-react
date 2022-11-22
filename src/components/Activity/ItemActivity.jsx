@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import {Flex, Text, IconButton, Box, Stack, useDisclosure} from "@chakra-ui/react"
 import { DeleteIcon } from '@chakra-ui/icons';
-import Alert from '../Alert';
+import AlertDelete from '../AlertDelete';
 
 const ItemActivity = ({title, date, deleteItemActivity, editItem}) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -15,7 +15,7 @@ const ItemActivity = ({title, date, deleteItemActivity, editItem}) => {
           <IconButton variant="ghost" onClick={onOpen}  icon={<DeleteIcon color="#888" />} _hover={{background: "none"}} />
         </Flex>
       </Flex>
-      <Alert isOpen={isOpen} title={title} item="activity" 
+      <AlertDelete isOpen={isOpen} title={title} item="activity" 
       cancelRef={cancelRef} onClose={onClose} deleteItem={deleteItemActivity} />
     </Stack>
   )
